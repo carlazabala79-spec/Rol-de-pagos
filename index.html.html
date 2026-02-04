@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ROL DE PAGOS</title>
+<style>
+body{font-family:Arial;background:#f4f6f8;padding:20px}
+h1{text-align:center;color:#003366}
+.contenedor{max-width:1100px;margin:auto;background:#fff;padding:20px;border-radius:8px}
+label{font-weight:bold}
+input,select{padding:6px;width:100%}
+table{width:100%;border-collapse:collapse;margin-top:20px}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+th{background:#e6eef7}
+.total{font-weight:bold;background:#f0f0f0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+</style>
+</head>
+
+<body>
+<h1>ROL DE PAGOS</h1>
+
+<div class="contenedor">
+
+<h3>Datos del trabajador</h3>
+<div class="grid">
+<input placeholder="Nombre del trabajador">
+<input placeholder="Cédula">
+<input placeholder="Cargo">
+<input placeholder="Sector (Público / Privado)">
+<input type="date" placeholder="Fecha de ingreso">
+<input placeholder="Días trabajados" id="dias" value="30" oninput="calcular()">
+<input placeholder="Sueldo mensual" id="sueldo" value="460" oninput="calcular()">
+</div>
+
+<h3>Horas Extras</h3>
+<table>
+<tr>
+<th>Horas Ordinarias (50%)</th>
+<th>Horas Extraordinarias (100%)</th>
+</tr>
+<tr>
+<td><input type="number" id="ho" value="0" oninput="calcular()"></td>
+<td><input type="number" id="he" value="0" oninput="calcular()"></td>
+</tr>
+</table>
+
+<h3>Ingresos y Beneficios</h3>
+<table>
+<tr>
+<th>Sueldo ganado</th>
+<th>Horas ordinarias</th>
+<th>Horas extraordinarias</th>
+<th>Décimo tercero</th>
+<th>Décimo cuarto</th>
+<th>Fondos de reserva</th>
+</tr>
+<tr>
+<td id="sg">0.00</td>
+<td id="vho">0.00</td>
+<td id="vhe">0.00</td>
+<td id="d3">0.00</td>
+<td id="d4">0.00</td>
+<td id="fr">0.00</td>
+</tr>
+</table>
+
+<h3>Descuentos y Totales</h3>
+<table>
+<tr>
+<th>Aporte personal IESS (9.45%)</th>
+<th>Total ingresos</th>
+<th>Total descuentos</th>
+<th>Neto a recibir</th>
+<th>Aporte patronal (11.15%)</th>
+</tr>
+<tr class="total">
+<td id="ap">0.00</td>
+<td id="ti">0.00</td>
+<td id="td">0.00</td>
+<td id="neto">0.00</td>
+<td id="pat">0.00</td>
+</tr>
+</table>
+
+</div>
+
+<script>
+function calcular(){
+let dias=+document.getElementById("dias").value||0;
+let sueldo=+document.getElementById("sueldo").value||0;
+let ho=+document.getElementById("ho").value||0;
+let he=+document.getElementById("he").value||0;
+
+let sg=(sueldo/30)*dias;
+let valorHora=sueldo/240;
+let vho=ho*valorHora*1.5;
+let vhe=he*valorHora*2;
+
+let d3=sueldo/12;
+let d4=460/12;
+let fr=sueldo*0.0833;
+
+let totalIngresos=sg+vho+vhe+d3+d4+fr;
+let ap=totalIngresos*0.0945;
+let neto=totalIngresos-ap;
+let pat=totalIngresos*0.1115;
+
+document.getElementById("sg").innerText=sg.toFixed(2);
+document.getElementById("vho").innerText=vho.toFixed(2);
+document.getElementById("vhe").innerText=vhe.toFixed(2);
+document.getElementById("d3").innerText=d3.toFixed(2);
+document.getElementById("d4").innerText=d4.toFixed(2);
+document.getElementById("fr").innerText=fr.toFixed(2);
+document.getElementById("ti").innerText=totalIngresos.toFixed(2);
+document.getElementById("ap").innerText=ap.toFixed(2);
+document.getElementById("td").innerText=ap.toFixed(2);
+document.getElementById("neto").innerText=neto.toFixed(2);
+document.getElementById("pat").innerText=pat.toFixed(2);
+}
+calcular();
+</script>
+
+</body>
+</html>
